@@ -1,0 +1,17 @@
+.sidenav-logo img {
+  width: 30%;
+  object-fit: cover;
+}
+
+.pro-inner-item {
+  padding: 7px 20px !important;
+}
+
+.pro-icon svg {
+  font-size: 20px;
+}
+
+.side-logout {
+  position: absolute;
+  bottom: 2%;
+}
