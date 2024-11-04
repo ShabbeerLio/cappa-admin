@@ -23,15 +23,15 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #aa8453;
 }
 
 .pro-sidebar .pro-menu .pro-menu-item.active {
-  color: #2c82ad !important;
+  color: #aa8453 !important;
 }
 
 .pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item:hover {
-  color: #2c82ad !important;
+  color: #aa8453 !important;
 }
 
 @keyframes App-logo-spin {
@@ -45,13 +45,13 @@
 
 .banner {
   padding: 2rem;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
   height: 95%;
   overflow-y: auto;
 }
 .banner button {
   padding: 10px 20px;
-  background-color: #2c82ad;
+  background-color: #aa8453;
   border: none;
   color: white;
   border-radius: 8px;
@@ -60,8 +60,8 @@
 .btn-primary:hover,
 .btn-primary:focus {
   color: #fff;
-  background-color: #2c82ad;
-  border-color: #2c82ad;
+  background-color: #aa8453;
+  border-color: #aa8453;
   box-shadow: none;
 }
 
