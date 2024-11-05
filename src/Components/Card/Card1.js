@@ -24,8 +24,12 @@ const Card1 = () => {
             </div>
             <div className="card-detail">
                 <span>link-link-link</span>
-                <h4>title</h4>
+                <h5>title</h5>
+                <p>Location</p>
+                <p>days</p>
                 <p>{limitWords("Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, nulla numquam iusto animi quis labore hic eveniet quisquam consequatur doloribus odit voluptates facilis, laudantium enim dolorem deleniti in eaque! Temporibus incidunt similique vero magni officiis impedit sed eius magnam voluptas eaque assumenda ea, vel praesentium quisquam dolorem cum voluptatum rerum!", 20)}</p>
+            </div>
+            <div className="card-view">
                 <div className="card-detail-action">
                     <p>
                         <MdDelete className="mx-2" />
@@ -34,8 +38,6 @@ const Card1 = () => {
                         <MdEdit className="mx-2" />
                     </p>
                 </div>
-            </div>
-            <div className="card-view">
                 <button className="btn btn-secondary" onClick={handleViewClick}>
                     {showSubcategories ? "Hide" : "View"}
                 </button>

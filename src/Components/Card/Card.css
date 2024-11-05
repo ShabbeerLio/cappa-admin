@@ -22,6 +22,10 @@
 .card-detail {
   width: 65%;
 }
+.card-detail h5{
+ font-size: 18px;
+ margin: 0;
+}
 .card-detail span{
  color: #aa8453;
  font-size: 14px;
@@ -33,6 +37,7 @@
 .card-detail-action {
   display: flex;
   align-items: center;
+  margin-bottom: 2rem;
 }
 .card-detail-action p {
   cursor: pointer;
