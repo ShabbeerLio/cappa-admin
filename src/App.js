@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
 import { useState } from 'react';
 import SidebarNav from "./Components/Sidebar/SidebarNav";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import Topbar from "./Components/Sidebar/Topbar";
 import Login from "./Components/LogIn/Login";
 import IndienRun from "./Pages/IndienRun";
@@ -32,7 +33,7 @@ function App() {
   return (
     <NoteState>
       <Router>
-        {/* <CssBaseline /> */}
+        <CssBaseline />
         <div className="App">
           <SidebarNav isSidebar={isSidebar} />
           <div className="content">
