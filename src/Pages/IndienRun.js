@@ -10,22 +10,31 @@ import EditItem1 from '../Components/EditItems/EditItem1';
 
 const IndienRun = (props) => {
     const context = useContext(NoteContext);
-    const { notes, getCategory, addCategory, editCategory, deleteCategory } = context;
+    const {
+        notes,
+        getsubCategory,
+        addSubcategory,
+        editSubcategory,
+        deleteSubcategory,
+    } = context;
+
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState(true);
     const navigate = useNavigate();
 
+    // Example categoryId - update this dynamically if needed
+    const categoryId = "672cac573e14f1e3f07301b7";
+
     useEffect(() => {
-        const fetchClients = async () => {
+        const fetchSubcategories = async () => {
             if (localStorage.getItem("token")) {
-                await getCategory();
+                await getsubCategory(categoryId);
                 setLoading(false);
             } else {
                 navigate("/login");
             }
         };
-        fetchClients();
-    }, [navigate, getCategory]);
+        fetchSubcategories();
+    }, [navigate, getsubCategory, categoryId]);
 
     const ref = useRef(null);
     const refClose = useRef(null);
@@ -37,9 +46,6 @@ const IndienRun = (props) => {
         seimage: null,
         esubcategories: [],
     });
-
-    // console.log(note,'data')
-
 
     const updateNote = (currentNote) => {
         ref.current.click();
@@ -54,7 +60,7 @@ const IndienRun = (props) => {
     };
 
     const handleClick = (e) => {
-        editCategory(note.id, note.ecategory, note.ecategorydesc, note.etag, note.esubcategories, note.seimage);
+        editSubcategory(note.id, note.ecategory, note.ecategorydesc, note.etag, note.esubcategories, note.seimage);
         refClose.current.click();
         props.showAlert("Updated successfully", "success");
     };
@@ -89,7 +95,7 @@ const IndienRun = (props) => {
                                 <MdAdd /> Add Category
                             </button>
                         </div>
-                        <AddItem1 addItem={addCategory} refClose={refClose} showAlert={props.showAlert} />
+                        <AddItem1 addItem={addSubcategory} refClose={refClose} showAlert={props.showAlert} />
                         <button
                             type="button"
                             className="btn btn-primary d-none"
@@ -113,7 +119,7 @@ const IndienRun = (props) => {
                                 note && <Card1
                                     key={note._id}
                                     index={index}
-                                    deleteItem={deleteCategory}
+                                    deleteItem={deleteSubcategory}
                                     updateNote={updateNote}
                                     showAlert={props.showAlert}
                                     note={note}

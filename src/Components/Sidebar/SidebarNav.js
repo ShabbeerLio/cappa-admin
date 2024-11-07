@@ -90,7 +90,7 @@ const SidebarNav = () => {
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Indien Rundreise"
-              to="/"
+              to="/indien-rundreise"
               icon={<TbCategory />}
               selected={selected}
               setSelected={setSelected}
@@ -155,6 +155,14 @@ const SidebarNav = () => {
             <Item
               title="Blog"
               to="/Blog"
+              icon={<MdHighlight />}
+              selected={selected}
+              setSelected={setSelected}
+              className="sidenav-icon"
+            />
+            <Item
+              title="Category"
+              to="/"
               icon={<MdHighlight />}
               selected={selected}
               setSelected={setSelected}

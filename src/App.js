@@ -16,6 +16,7 @@ import SafariRun from "./Pages/SafariRun";
 import Blog from "./Pages/Blog/Blog";
 import NoteState from "./Context/Banner/NoteState";
 import Alert from "./Components/Alert/Alert";
+import Category from "./Pages/Category";
 
 function App() {
   const [isSidebar, setIsSidebar] = useState(true);
@@ -40,8 +41,9 @@ function App() {
             <Topbar setIsSidebar={setIsSidebar} />
             <Alert alert={alert} />
             <Routes>
+              <Route path="/" exact element={<Category showAlert={showAlert} />} />
               <Route path="/login" exact element={<Login showAlert={showAlert} />} />
-              <Route path="/" exact element={<IndienRun showAlert={showAlert} />} />
+              <Route path="/indien-rundreise" exact element={<IndienRun showAlert={showAlert} />} />
               <Route path="/nepal-rundreise" exact element={<NepalRun showAlert={showAlert} />} />
               <Route path="/srilanka-rundreise" exact element={<SrilankaRun showAlert={showAlert} />} />
               <Route path="/bhutan-rundreise" exact element={<BhutanRun showAlert={showAlert} />} />

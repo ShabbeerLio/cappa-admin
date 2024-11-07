@@ -37,7 +37,6 @@
 .card-detail-action {
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
 }
 .card-detail-action p {
   cursor: pointer;
@@ -65,4 +64,8 @@
 .card-image img{
   width: 100%;
   aspect-ratio: 3/2;
+}
+
+.category-btn .card-detail-action{
+justify-content: flex-end;
 }

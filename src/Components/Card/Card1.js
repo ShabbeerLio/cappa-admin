@@ -41,10 +41,10 @@ const Card1 = ({ note, index, deleteItem, updateNote, showAlert }) => {
                 <div className="card-view">
                     <div className="card-detail-action">
                         <p onClick={() => deleteItem(note._id)}>
-                            <MdDelete className="mx-2" />
+                            <MdDelete className="mx-2 my-3" />
                         </p>
                         <p onClick={() => updateNote(note)}>
-                            <MdEdit className="mx-2" />
+                            <MdEdit className="mx-2 my-3" />
                         </p>
                     </div>
                     <button className="btn btn-secondary" onClick={handleViewClick}>

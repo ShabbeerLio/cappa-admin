@@ -2,54 +2,54 @@ import { useState } from "react";
 
 const AddItem1 = ({ addItem, refClose, showAlert }) => {
     const [note, setNote] = useState({
-        category: "",
-        categorydesc: "",
-        tag: "",
-        subcategories: [{ name: "", description: "" }],
+        subCategory: "",
+        subCategorydesc: "",
+        location: "",
+        interval: "",
+        metaTag: "",
+        metaTitle: "",
+        metaDesc: "",
     });
-    const [image, setImage] = useState(null);
+    const [subCatimageUrl, setimsubCatimageUrl] = useState(null);
+    const [about1imageUrl, setabout1imageUrl] = useState(null);
+    const [about2imageUrl, setabout2imageUrl] = useState(null);
 
     const handleImageChange = (e) => {
         e.preventDefault();
-        setImage(e.target.files[0]);
+        setimsubCatimageUrl(e.target.files[0]);
+    };
+    const handleImageChange1 = (e) => {
+        e.preventDefault();
+        setabout1imageUrl(e.target.files[0]);
+    };
+    const handleImageChange2 = (e) => {
+        e.preventDefault();
+        setabout2imageUrl(e.target.files[0]);
     };
 
     const handleClick = async (e) => {
         e.preventDefault();
 
         try {
-            await addItem(note.category, note.categorydesc, note.tag, note.subcategories, image);
+            await addItem(note.subCategory, note.subCategorydesc, note.location, note.interval, note.metaTag, note.metaTitle, note.metaDesc, );
             setNote({
-                category: "",
-                categorydesc: "",
-                tag: "",
-                subcategories: [{ name: "", description: "" }],
+                subCategory: "",
+                subCategorydesc: "",
+                location: "",
+                interval: "",
+                metaTag: "",
+                metaTitle: "",
+                metaDesc: "",
             });
-            setImage(null);
-            refClose.current.click();
+            // setimsubCatimageUrl(null);
+            // setabout1imageUrl(null);
+            // setabout2imageUrl(null);
+            // refClose.current.click();
             showAlert("Added successfully", "success");
         } catch (error) {
             console.error("There was an error uploading the file!", error);
             showAlert("There was an error uploading the file!", "danger");
         }
-    };
-
-    const onChange = (e, index, field) => {
-        const newSubcategories = [...note.subcategories];
-        newSubcategories[index][field] = e.target.value;
-        setNote({ ...note, subcategories: newSubcategories });
-    };
-
-    const addSubcategoryField = () => {
-        setNote({
-            ...note,
-            subcategories: [...note.subcategories, { name: "", description: "" }],
-        });
-    };
-
-    const removeSubcategoryField = (index) => {
-        const newSubcategories = note.subcategories.filter((_, i) => i !== index);
-        setNote({ ...note, subcategories: newSubcategories });
     };
 
     return (
@@ -62,32 +62,38 @@ const AddItem1 = ({ addItem, refClose, showAlert }) => {
                     </div>
                     <div className="modal-body">
                         <form>
+                            {/* <div className="mb-3">
+                                <label htmlFor="subCatimageUrl" className="form-label">Image</label>
+                                <input type="file" className="form-control" id="subCatimageUrl" name="subCatimageUrl" onChange={handleImageChange} />
+                            </div> */}
                             <div className="mb-3">
-                                <label htmlFor="category" className="form-label">Category</label>
-                                <input type="text" className="form-control" id="category" name="category" value={note.category} onChange={(e) => setNote({ ...note, category: e.target.value })} required />
+                                <label htmlFor="subCategory" className="form-label">subCategory</label>
+                                <input type="text" className="form-control" id="subCategory" name="subCategory" value={note.subCategory} onChange={(e) => setNote({ ...note, subCategory: e.target.value })} />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="imageUrl" className="form-label">Image</label>
-                                <input type="file" className="form-control" id="imageUrl" name="imageUrl" onChange={handleImageChange} required />
+                                <label htmlFor="subCategorydesc" className="form-label">Description</label>
+                                <textarea type="text" className="form-control" id="subCategorydesc" name="subCategorydesc" value={note.subCategorydesc} onChange={(e) => setNote({ ...note, subCategorydesc: e.target.value })} />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="categorydesc" className="form-label">Description</label>
-                                <textarea type="text" className="form-control" id="categorydesc" name="categorydesc" value={note.categorydesc} onChange={(e) => setNote({ ...note, categorydesc: e.target.value })} />
+                                <label htmlFor="location" className="form-label">location</label>
+                                <input type="text" className="form-control" id="location" name="location" value={note.location} onChange={(e) => setNote({ ...note, location: e.target.value })} />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="tag" className="form-label">Page Link</label>
-                                <input type="text" className="form-control" id="tag" name="tag" value={note.tag} onChange={(e) => setNote({ ...note, tag: e.target.value })} required placeholder="Enter in Lowercase" />
+                                <label htmlFor="interval" className="form-label">interval</label>
+                                <input type="text" className="form-control" id="interval" name="interval" value={note.interval} onChange={(e) => setNote({ ...note, interval: e.target.value })} />
                             </div>
-                            {note.subcategories.map((subcategory, index) => (
-                                <div key={index} className="mb-3">
-                                    <label htmlFor={`subcategory-name-${index}`} className="form-label">Subcategory Name</label>
-                                    <input type="text" className="form-control" id={`subcategory-name-${index}`} name="name" value={subcategory.name} onChange={(e) => onChange(e, index, "name")} />
-                                    <label htmlFor={`subcategory-description-${index}`} className="form-label">Subcategory Description</label>
-                                    <textarea className="form-control" id={`subcategory-description-${index}`} name="description" value={subcategory.description} onChange={(e) => onChange(e, index, "description")} />
-                                    <button type="button" className="btn btn-danger mt-2" onClick={() => removeSubcategoryField(index)}>Remove</button>
-                                </div>
-                            ))}
-                            <button type="button" className="btn btn-primary mt-2" onClick={addSubcategoryField}>Add Subcategory</button>
+                            <div className="mb-3">
+                                <label htmlFor="metaTag" className="form-label">metaTag</label>
+                                <input type="text" className="form-control" id="metaTag" name="metaTag" value={note.metaTag} onChange={(e) => setNote({ ...note, metaTag: e.target.value })} />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="metaTitle" className="form-label">metaTitle</label>
+                                <input type="text" className="form-control" id="metaTitle" name="metaTitle" value={note.metaTitle} onChange={(e) => setNote({ ...note, metaTitle: e.target.value })} />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="metaDesc" className="form-label">metaDesc</label>
+                                <input type="text" className="form-control" id="metaDesc" name="metaDesc" value={note.metaDesc} onChange={(e) => setNote({ ...note, metaDesc: e.target.value })} />
+                            </div>
                         </form>
                     </div>
                     <div className="modal-footer">
