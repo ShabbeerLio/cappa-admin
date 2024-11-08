@@ -112,11 +112,11 @@ const NoteState = (props) => {
                     "auth-token": localStorage.getItem('token')
                 },
             });
-    
+
             if (!response.ok) {
                 throw new Error(`Error: ${response.status} ${response.statusText}`);
             }
-    
+
             const data = await response.json();
             setNotes(data);  // Assuming `notes` is used for storing fetched subcategories
         } catch (error) {
@@ -125,19 +125,7 @@ const NoteState = (props) => {
     };
 
     // Add SubCategory
-    const addSubcategory = async (
-        clientId, 
-        subCategory, 
-        subCategorydesc, 
-        location, 
-        interval, 
-        metaTag, 
-        metaTitle, 
-        metaDesc,
-        // subCatimageUrl, 
-        // about1imageUrl,
-        // about2imageUrl
-    ) => {
+    const addSubcategory = async (clientId, subCategory, subCategorydesc, location, interval, metaTag, metaTitle, metaDesc, subCatimageUrl, about1imageUrl, about2imageUrl) => {
         try {
             const formData = new FormData();
             formData.append('subCategory', subCategory);
@@ -147,12 +135,12 @@ const NoteState = (props) => {
             formData.append('metaTag', metaTag);
             formData.append('metaTitle', metaTitle);
             formData.append('metaDesc', metaDesc);
-    
+
             // Append images if provided
-            // if (subCatimageUrl) formData.append('subCatimageUrl', subCatimageUrl);
-            // if (about1imageUrl) formData.append('about1imageUrl', about1imageUrl);
-            // if (about2imageUrl) formData.append('about2imageUrl', about2imageUrl);
-    
+            if (subCatimageUrl) formData.append('subCatimageUrl', subCatimageUrl);
+            if (about1imageUrl) formData.append('about1imageUrl', about1imageUrl);
+            if (about2imageUrl) formData.append('about2imageUrl', about2imageUrl);
+
             const response = await fetch(`${host}/api/category/${clientId}/subcategories`, {
                 method: "POST",
                 headers: {
@@ -160,20 +148,23 @@ const NoteState = (props) => {
                 },
                 body: formData
             });
-    
+
             if (!response.ok) {
                 const errorResponse = await response.json();
                 throw new Error(errorResponse.error || 'Failed to add subcategory detail');
             }
-    
-            const updatedClient = await response.json();
-            
+
+            const { client: updatedClient } = await response.json();
+
+            // Update state with the new subcategory for the specific client
             setNotes(prevNotes =>
-                prevNotes.map(note => note._id === clientId ? updatedClient.client : note)
+                prevNotes.map(note =>
+                    note._id === clientId ? updatedClient : note
+                )
             );
-            
+
             console.log("Subcategory added successfully", "success");
-    
+
         } catch (error) {
             console.error("Error adding subcategory:", error.message);
         }

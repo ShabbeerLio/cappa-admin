@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const AddItem1 = ({ addItem, refClose, showAlert }) => {
+const AddItem1 = ({ addItem, refClose, showAlert, categoryId }) => {
     const [note, setNote] = useState({
         subCategory: "",
         subCategorydesc: "",
@@ -10,13 +10,15 @@ const AddItem1 = ({ addItem, refClose, showAlert }) => {
         metaTitle: "",
         metaDesc: "",
     });
-    const [subCatimageUrl, setimsubCatimageUrl] = useState(null);
+
+    const [subCatimageUrl, setsubCatimageUrl] = useState(null);
     const [about1imageUrl, setabout1imageUrl] = useState(null);
     const [about2imageUrl, setabout2imageUrl] = useState(null);
 
+    // Handle image changes
     const handleImageChange = (e) => {
         e.preventDefault();
-        setimsubCatimageUrl(e.target.files[0]);
+        setsubCatimageUrl(e.target.files[0]);
     };
     const handleImageChange1 = (e) => {
         e.preventDefault();
@@ -27,11 +29,39 @@ const AddItem1 = ({ addItem, refClose, showAlert }) => {
         setabout2imageUrl(e.target.files[0]);
     };
 
+    const handleNoteChange = (e) => {
+        const { name, value } = e.target;
+        setNote((prevNote) => ({
+            ...prevNote,
+            [name]: value,
+        }));
+    };
+
     const handleClick = async (e) => {
         e.preventDefault();
-
+    
+        // const formData = new FormData();
+        // formData.append("subCategory", note.subCategory);
+        // formData.append("subCategorydesc", note.subCategorydesc);
+        // formData.append("location", note.location);
+        // formData.append("interval", note.interval);
+        // formData.append("metaTag", note.metaTag);
+        // formData.append("metaTitle", note.metaTitle);
+        // formData.append("metaDesc", note.metaDesc);
+    
+        // Add images to FormData
+        // if (subCatimageUrl) formData.append("subCatimageUrl", subCatimageUrl);
+        // if (about1imageUrl) formData.append("about1imageUrl", about1imageUrl);
+        // if (about2imageUrl) formData.append("about2imageUrl", about2imageUrl);
+    
+        // Log FormData entries to verify data before submission
+        // for (let [key, value] of formData.entries()) {
+        //     console.log(`${key}:`, value);
+        // }
+    
         try {
-            await addItem(note.subCategory, note.subCategorydesc, note.location, note.interval, note.metaTag, note.metaTitle, note.metaDesc, );
+            const result = await addItem(categoryId, note.subCategory ,note.subCategorydesc ,note.location ,note.interval ,note.metaTag ,note.metaTitle ,note.metaDesc);
+            console.log("FormData sent successfully:", result);
             setNote({
                 subCategory: "",
                 subCategorydesc: "",
@@ -41,10 +71,9 @@ const AddItem1 = ({ addItem, refClose, showAlert }) => {
                 metaTitle: "",
                 metaDesc: "",
             });
-            // setimsubCatimageUrl(null);
-            // setabout1imageUrl(null);
-            // setabout2imageUrl(null);
-            // refClose.current.click();
+            // setSubCatImageUrl(null);
+            // setAbout1ImageUrl(null);
+            // setAbout2ImageUrl(null);
             showAlert("Added successfully", "success");
         } catch (error) {
             console.error("There was an error uploading the file!", error);
@@ -62,38 +91,46 @@ const AddItem1 = ({ addItem, refClose, showAlert }) => {
                     </div>
                     <div className="modal-body">
                         <form>
-                            {/* <div className="mb-3">
-                                <label htmlFor="subCatimageUrl" className="form-label">Image</label>
-                                <input type="file" className="form-control" id="subCatimageUrl" name="subCatimageUrl" onChange={handleImageChange} />
-                            </div> */}
                             <div className="mb-3">
-                                <label htmlFor="subCategory" className="form-label">subCategory</label>
-                                <input type="text" className="form-control" id="subCategory" name="subCategory" value={note.subCategory} onChange={(e) => setNote({ ...note, subCategory: e.target.value })} />
+                                <label htmlFor="subCategory" className="form-label">Subcategory</label>
+                                <input type="text" className="form-control" id="subCategory" name="subCategory" value={note.subCategory} onChange={handleNoteChange} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="subCategorydesc" className="form-label">Description</label>
-                                <textarea type="text" className="form-control" id="subCategorydesc" name="subCategorydesc" value={note.subCategorydesc} onChange={(e) => setNote({ ...note, subCategorydesc: e.target.value })} />
+                                <textarea type="text" className="form-control" id="subCategorydesc" name="subCategorydesc" value={note.subCategorydesc} onChange={handleNoteChange} />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="location" className="form-label">location</label>
-                                <input type="text" className="form-control" id="location" name="location" value={note.location} onChange={(e) => setNote({ ...note, location: e.target.value })} />
+                                <label htmlFor="location" className="form-label">Location</label>
+                                <input type="text" className="form-control" id="location" name="location" value={note.location} onChange={handleNoteChange} />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="interval" className="form-label">interval</label>
-                                <input type="text" className="form-control" id="interval" name="interval" value={note.interval} onChange={(e) => setNote({ ...note, interval: e.target.value })} />
+                                <label htmlFor="interval" className="form-label">Interval</label>
+                                <input type="text" className="form-control" id="interval" name="interval" value={note.interval} onChange={handleNoteChange} />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="metaTag" className="form-label">metaTag</label>
-                                <input type="text" className="form-control" id="metaTag" name="metaTag" value={note.metaTag} onChange={(e) => setNote({ ...note, metaTag: e.target.value })} />
+                                <label htmlFor="metaTag" className="form-label">Meta Tag</label>
+                                <input type="text" className="form-control" id="metaTag" name="metaTag" value={note.metaTag} onChange={handleNoteChange} />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="metaTitle" className="form-label">metaTitle</label>
-                                <input type="text" className="form-control" id="metaTitle" name="metaTitle" value={note.metaTitle} onChange={(e) => setNote({ ...note, metaTitle: e.target.value })} />
+                                <label htmlFor="metaTitle" className="form-label">Meta Title</label>
+                                <input type="text" className="form-control" id="metaTitle" name="metaTitle" value={note.metaTitle} onChange={handleNoteChange} />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="metaDesc" className="form-label">metaDesc</label>
-                                <input type="text" className="form-control" id="metaDesc" name="metaDesc" value={note.metaDesc} onChange={(e) => setNote({ ...note, metaDesc: e.target.value })} />
+                                <label htmlFor="metaDesc" className="form-label">Meta Description</label>
+                                <input type="text" className="form-control" id="metaDesc" name="metaDesc" value={note.metaDesc} onChange={handleNoteChange} />
                             </div>
+                            {/* <div className="mb-3">
+                                <label htmlFor="subCatimageUrl" className="form-label">Subcategory Image</label>
+                                <input type="file" className="form-control" id="subCatimageUrl" name="subCatimageUrl" onChange={handleImageChange} />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="about1imageUrl" className="form-label">About 1 Image</label>
+                                <input type="file" className="form-control" id="about1imageUrl" name="about1imageUrl" onChange={handleImageChange1} />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="about2imageUrl" className="form-label">About 2 Image</label>
+                                <input type="file" className="form-control" id="about2imageUrl" name="about2imageUrl" onChange={handleImageChange2} />
+                            </div> */}
                         </form>
                     </div>
                     <div className="modal-footer">

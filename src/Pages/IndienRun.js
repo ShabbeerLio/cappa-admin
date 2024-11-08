@@ -27,8 +27,12 @@ const IndienRun = (props) => {
     useEffect(() => {
         const fetchSubcategories = async () => {
             if (localStorage.getItem("token")) {
-                await getsubCategory(categoryId);
-                setLoading(false);
+                try {
+                    await getsubCategory(categoryId);
+                    setLoading(false);
+                } catch (error) {
+                    console.error("Error fetching subcategories:", error);
+                }
             } else {
                 navigate("/login");
             }
@@ -40,27 +44,43 @@ const IndienRun = (props) => {
     const refClose = useRef(null);
     const [note, setNote] = useState({
         id: "",
-        ecategory: "",
-        ecategorydesc: "",
-        etag: "",
+        subCategory: "",
+        subCategorydesc: "",
+        location: "",
+        interval: "",
+        metaTag: "",
+        metaTitle: "",
+        metaDesc: "",
         seimage: null,
-        esubcategories: [],
     });
 
     const updateNote = (currentNote) => {
         ref.current.click();
         setNote({
             id: currentNote._id,
-            ecategory: currentNote.category,
-            ecategorydesc: currentNote.categorydesc,
-            etag: currentNote.tag,
-            seimage: null,
-            esubcategories: currentNote.subcategories,
+            esubCategory: currentNote.subCategory,
+            esubCategorydesc: currentNote.subCategorydesc,
+            elocation: currentNote.location,
+            einterval: currentNote.interval,
+            emetaTag: currentNote.metaTag,
+            emetaTitle: currentNote.metaTitle,
+            emetaDesc: currentNote.metaDesc,
+            eseimage: null,
         });
     };
 
     const handleClick = (e) => {
-        editSubcategory(note.id, note.ecategory, note.ecategorydesc, note.etag, note.esubcategories, note.seimage);
+        editSubcategory(
+            note.id,
+            note.esubCategory,
+            note.esubCategorydesc,
+            note.elocation,
+            note.einterval,
+            note.emetaTag,
+            note.emetaTitle,
+            note.emetaDesc,
+            note.eseimage
+        );
         refClose.current.click();
         props.showAlert("Updated successfully", "success");
     };
@@ -95,7 +115,7 @@ const IndienRun = (props) => {
                                 <MdAdd /> Add Category
                             </button>
                         </div>
-                        <AddItem1 addItem={addSubcategory} refClose={refClose} showAlert={props.showAlert} />
+                        <AddItem1 categoryId={categoryId} addItem={addSubcategory} refClose={refClose} showAlert={props.showAlert} />
                         <button
                             type="button"
                             className="btn btn-primary d-none"
