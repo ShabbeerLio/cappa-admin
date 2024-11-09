@@ -44,14 +44,16 @@ const IndienRun = (props) => {
     const refClose = useRef(null);
     const [note, setNote] = useState({
         id: "",
-        subCategory: "",
-        subCategorydesc: "",
-        location: "",
-        interval: "",
-        metaTag: "",
-        metaTitle: "",
-        metaDesc: "",
+        esubCategory: "",
+        esubCategorydesc: "",
+        elocation: "",
+        einterval: "",
+        emetaTag: "",
+        emetaTitle: "",
+        emetaDesc: "",
         seimage: null,
+        seimage1: null,
+        seimage2: null,
     });
 
     const updateNote = (currentNote) => {
@@ -66,11 +68,14 @@ const IndienRun = (props) => {
             emetaTitle: currentNote.metaTitle,
             emetaDesc: currentNote.metaDesc,
             eseimage: null,
+            eseimage1: null,
+            eseimage2: null,
         });
     };
 
     const handleClick = (e) => {
         editSubcategory(
+            categoryId,
             note.id,
             note.esubCategory,
             note.esubCategorydesc,
@@ -79,7 +84,9 @@ const IndienRun = (props) => {
             note.emetaTag,
             note.emetaTitle,
             note.emetaDesc,
-            note.eseimage
+            note.eseimage,
+            note.eseimage1,
+            note.eseimage2
         );
         refClose.current.click();
         props.showAlert("Updated successfully", "success");
@@ -90,7 +97,14 @@ const IndienRun = (props) => {
     };
 
     const onImageChange = (e) => {
-        setNote({ ...note, seimage: e.target.files[0] });
+        // Handle multiple image fields if available
+        if (e.target.name === "seimage") {
+            setNote({ ...note, seimage: e.target.files[0] });
+        } else if (e.target.name === "seimage1") {
+            setNote({ ...note, seimage1: e.target.files[0] });
+        } else if (e.target.name === "seimage2") {
+            setNote({ ...note, seimage2: e.target.files[0] });
+        }
     };
     return (
         <>
@@ -115,7 +129,7 @@ const IndienRun = (props) => {
                                 <MdAdd /> Add Category
                             </button>
                         </div>
-                        <AddItem1 categoryId={categoryId} addItem={addSubcategory} refClose={refClose} showAlert={props.showAlert} />
+                        <AddItem1 clientId={categoryId} addItem={addSubcategory} refClose={refClose} showAlert={props.showAlert} />
                         <button
                             type="button"
                             className="btn btn-primary d-none"
@@ -143,6 +157,7 @@ const IndienRun = (props) => {
                                     updateNote={updateNote}
                                     showAlert={props.showAlert}
                                     note={note}
+                                    categoryId={categoryId}
                                 />
                             ))}
                         </div>

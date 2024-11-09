@@ -124,10 +124,11 @@ const NoteState = (props) => {
         }
     };
 
-    // Add SubCategory
     const addSubcategory = async (clientId, subCategory, subCategorydesc, location, interval, metaTag, metaTitle, metaDesc, subCatimageUrl, about1imageUrl, about2imageUrl) => {
         try {
             const formData = new FormData();
+
+            // Append text data
             formData.append('subCategory', subCategory);
             formData.append('subCategorydesc', subCategorydesc);
             formData.append('location', location);
@@ -137,9 +138,9 @@ const NoteState = (props) => {
             formData.append('metaDesc', metaDesc);
 
             // Append images if provided
-            if (subCatimageUrl) formData.append('subCatimageUrl', subCatimageUrl);
-            if (about1imageUrl) formData.append('about1imageUrl', about1imageUrl);
-            if (about2imageUrl) formData.append('about2imageUrl', about2imageUrl);
+            if (subCatimageUrl) formData.append('subCatImage', subCatimageUrl); // Match with backend field name
+            if (about1imageUrl) formData.append('about1Image', about1imageUrl); // Match with backend field name
+            if (about2imageUrl) formData.append('about2Image', about2imageUrl); // Match with backend field name
 
             const response = await fetch(`${host}/api/category/${clientId}/subcategories`, {
                 method: "POST",
@@ -150,64 +151,85 @@ const NoteState = (props) => {
             });
 
             if (!response.ok) {
-                const errorResponse = await response.json();
-                throw new Error(errorResponse.error || 'Failed to add subcategory detail');
+                throw new Error('Failed to add subcategory');
             }
 
-            const { client: updatedClient } = await response.json();
-
-            // Update state with the new subcategory for the specific client
-            setNotes(prevNotes =>
-                prevNotes.map(note =>
-                    note._id === clientId ? updatedClient : note
-                )
-            );
-
-            console.log("Subcategory added successfully", "success");
-
+            const updatedClient = await response.json();
+            setNotes(prevNotes => prevNotes.map(note => note._id === clientId ? updatedClient.client : note));
+            console.log("subcategory added successfully", "success");
         } catch (error) {
             console.error("Error adding subcategory:", error.message);
+            // Optionally, you can show an alert or error message here
         }
     };
 
 
     // Edit Blog detail
-    const editSubcategory = async (clientId, subcategoryId, name, description, image) => {
+    const editSubcategory = async (clientId, subcategoryId, subCategory, subCategorydesc, location, interval, metaTag, metaTitle, metaDesc, subCatimageUrl, about1imageUrl, about2imageUrl) => {
         try {
             const formData = new FormData();
-            formData.append('name', name);
-            formData.append('description', description);
-            if (image) {
-                formData.append('image', image);
+            formData.append('subCategory', subCategory);
+            formData.append('subCategorydesc', subCategorydesc);
+            formData.append('location', location);
+            formData.append('interval', interval);
+            formData.append('metaTag', metaTag);
+            formData.append('metaTitle', metaTitle);
+            formData.append('metaDesc', metaDesc);
+    
+            // Append images if provided
+            if (subCatimageUrl) {
+                console.log("Appending subCatImage:", subCatimageUrl);
+                formData.append('subCatImage', subCatimageUrl);
             }
-
-            const response = await fetch(`${host}/api/blog/${clientId}/subcategories/${subcategoryId}`, {
+            if (about1imageUrl) {
+                console.log("Appending about1Image:", about1imageUrl);
+                formData.append('about1Image', about1imageUrl);
+            }
+            if (about2imageUrl) {
+                console.log("Appending about2Image:", about2imageUrl);
+                formData.append('about2Image', about2imageUrl);
+            }
+    
+            // Log formData to ensure it's correctly structured (for debugging)
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+    
+            // Send PUT request to update subcategory
+            const response = await fetch(`${host}/api/category/${clientId}/subcategories/${subcategoryId}`, {
                 method: 'PUT',
                 headers: {
-                    "auth-token": localStorage.getItem('token')
+                    "auth-token": localStorage.getItem('token'),
                 },
                 body: formData
             });
-
+    
             if (!response.ok) {
                 const json = await response.json();
-                throw new Error(json.error || 'Failed to edit Blog detail');
+                throw new Error(json.error || 'Failed to edit subcategory');
             }
-
+    
             const updatedClient = await response.json();
-            setNotes(prevNotes => prevNotes.map(note => note._id === clientId ? updatedClient.client : note));
-            console.log("Blog detail edited successfully", "success");
+            setNotes(prevNotes =>
+                prevNotes.map(note =>
+                    note._id === clientId ? updatedClient.client : note
+                )
+            );
+    
+            console.log("Blog subcategories updated successfully");
+            // Optionally show a success alert
+            // showAlert("Subcategory updated successfully", "success");
         } catch (error) {
-            console.error("Error editing Blog detail:", error.message);
+            console.error("Error editing subcategory:", error.message);
+            // Optionally show an error alert
             // showAlert("Failed to edit subcategory", "error");
         }
     };
 
-
     // Delete Blog detail
     const deleteSubcategory = async (clientId, subcategoryId) => {
         try {
-            const response = await fetch(`${host}/api/blog/${clientId}/subcategories/${subcategoryId}`, {
+            const response = await fetch(`${host}/api/category/${clientId}/subcategories/${subcategoryId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -217,7 +239,7 @@ const NoteState = (props) => {
 
             if (!response.ok) {
                 const json = await response.json();
-                throw new Error(json.error || 'Failed to delete Blog detail');
+                throw new Error(json.error || 'Failed to delete subcategories');
             }
 
             // Update state to remove the deleted subcategory
@@ -229,7 +251,7 @@ const NoteState = (props) => {
                 )
             );
         } catch (error) {
-            console.error("Error deleting Blog detail:", error.message);
+            console.error("Error deleting subcategories:", error.message);
             // showAlert("Failed to delete subcategory", "error");
         }
     };

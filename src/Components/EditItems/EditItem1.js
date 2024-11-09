@@ -39,7 +39,7 @@ const EditItem1 = ({ onChange, note, refClose, handleClick, onImageChange }) => 
                 <label htmlFor="emetaDesc" className="form-label">metaDesc</label>
                 <input type="text" className="form-control" id="emetaDesc" name="emetaDesc" value={note.emetaDesc} onChange={onChange} />
               </div>
-              {/* <div className="mb-3">
+              <div className="mb-1">
                 <label htmlFor="seimage" className="form-label">
                   Upload Image
                 </label>
@@ -50,7 +50,31 @@ const EditItem1 = ({ onChange, note, refClose, handleClick, onImageChange }) => 
                   name="seimage"
                   onChange={onImageChange}
                 />
-              </div> */}
+              </div>
+              <div className="mb-1">
+                <label htmlFor="seimage1" className="form-label">
+                  Upload about1 Image
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="seimage1"
+                  name="seimage1"
+                  onChange={onImageChange}
+                />
+              </div>
+              <div className="mb-1">
+                <label htmlFor="seimage2" className="form-label">
+                  Upload about2 Image
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="seimage2"
+                  name="seimage2"
+                  onChange={onImageChange}
+                />
+              </div>
             </form>
           </div>
           <div className="modal-footer">

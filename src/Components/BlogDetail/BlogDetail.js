@@ -13,7 +13,7 @@ const BlogDetail = ({ note, showAlert }) => {
     const [currentSubcategoryId, setCurrentSubcategoryId] = useState(null);
 
     if (!note || !note.subcategories) {
-        return <div>No Blog Detail to display</div>;
+        return <div>No Sub Categories to display</div>;
     }
 
     const handleEditClick = (subNote) => {
