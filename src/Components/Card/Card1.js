@@ -55,7 +55,7 @@ const Card1 = ({ note, index, deleteItem, updateNote, showAlert, categoryId }) =
                 </div>
             </div>
             {showSubcategories && (
-                <BlogDetail note={note} showAlert={showAlert} />
+                <BlogDetail categoryId={categoryId} note={note} showAlert={showAlert} />
             )}
         </>
     )

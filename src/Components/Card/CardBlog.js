@@ -16,10 +16,10 @@ const CardBlog = ({ deleteItem, note, updateNote, showAlert }) => {
         updateNote(note);
     };
 
-    const getTruncatedDescription = (description) => {
-        const words = description.split(" ");
-        return words.length > 50 ? words.slice(0, 50).join(" ") + "..." : description;
-    };
+    // const getTruncatedDescription = (description) => {
+    //     const words = description.split(" ");
+    //     return words.length > 50 ? words.slice(0, 50).join(" ") + "..." : description;
+    // };
 
     return (
         <div className="col-md-3" style={{ color: "black" }}>
@@ -35,9 +35,10 @@ const CardBlog = ({ deleteItem, note, updateNote, showAlert }) => {
                 </div>
                 <div className="card-title">
                     <h5>{note.name}</h5>
-                    <p>{getTruncatedDescription(note.description)}</p>
+                    <p>{note.day}</p>
+                    <p>{note.description}</p>
                 </div>
-                <div className="card-buttons">
+                <div className="card-detail-action">
                     <p onClick={handleDelete} className="icon-button">
                         <MdDelete className="mx-2" />
                     </p>

@@ -69,3 +69,7 @@
 .category-btn .card-detail-action{
 justify-content: flex-end;
 }
+
+.card{
+  padding: 1rem;
+}

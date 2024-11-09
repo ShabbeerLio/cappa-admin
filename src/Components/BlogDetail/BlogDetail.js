@@ -5,21 +5,37 @@ import CardBlog from "../Card/CardBlog";
 import AddItemBlog from "../Subcategory/AddItemBlog";
 import EditItemBlogDetail from "../EditSubcategory/EditItemBlogDetail";
 
-const BlogDetail = ({ note, showAlert }) => {
+const BlogDetail = ({ note, showAlert, categoryId }) => {
     const ref = useRef(null);
     const refClose = useRef(null);
-    const { addCategorySubcategory, editCategorySubcategory, deleteCategorySubcategory } = useContext(NoteContext);
-    const [editForm, setEditForm] = useState({ etitle: "", edescription: "", eimage: null });
+    const {
+        addTour,
+        editTour,
+        deleteTour
+    } = useContext(NoteContext);
+
+    const [editForm, setEditForm] = useState({
+        etitle: "",
+        edescription: "",
+        eday: "",
+        eimage: null
+    });
+
     const [currentSubcategoryId, setCurrentSubcategoryId] = useState(null);
 
-    if (!note || !note.subcategories) {
-        return <div>No Sub Categories to display</div>;
+    if (!note || !note.tour) {
+        return <div>No sub Categories to display</div>;
     }
 
     const handleEditClick = (subNote) => {
         setCurrentSubcategoryId(subNote._id);
-        setEditForm({ etitle: subNote.name, edescription: subNote.description, eimage: null });
-        ref.current.click(); 
+        setEditForm({
+            etitle: subNote.name,
+            edescription: subNote.description,
+            eday: subNote.day,
+            eimage: null
+        });
+        ref.current.click();
     };
 
     const handleChange = (e) => {
@@ -32,7 +48,15 @@ const BlogDetail = ({ note, showAlert }) => {
 
     const handleUpdate = () => {
         if (currentSubcategoryId) {
-            editCategorySubcategory(note._id, currentSubcategoryId, editForm.etitle, editForm.edescription, editForm.eimage);
+            editTour(
+                categoryId,
+                note._id,
+                currentSubcategoryId,
+                editForm.etitle,
+                editForm.edescription,
+                editForm.eday,
+                editForm.eimage
+            );
             showAlert("Subcategory updated successfully", "success");
             refClose.current.click(); // Close the modal
         }
@@ -53,7 +77,7 @@ const BlogDetail = ({ note, showAlert }) => {
                         <MdAdd /> Add Blog Detail
                     </button>
                 </div>
-                <AddItemBlog notes={note} addItem={addCategorySubcategory} refClose={refClose} showAlert={showAlert} />
+                <AddItemBlog categoryId={categoryId} notes={note} addItem={addTour} refClose={refClose} showAlert={showAlert} />
                 <button
                     type="button"
                     className="btn btn-primary d-none"
@@ -70,13 +94,13 @@ const BlogDetail = ({ note, showAlert }) => {
                 />
                 <div className="row my-3 mx-3">
                     <div className="container mx-2">
-                        {note.subcategories.length === 0 && "No Items to display"}
+                        {note.tour.length === 0 && "No Items to display"}
                     </div>
-                    {note.subcategories.map((subNote) => (
+                    {note.tour.map((subNote) => (
                         <CardBlog
                             key={subNote._id}
                             deleteItem={() => {
-                                deleteCategorySubcategory(note._id, subNote._id);
+                                deleteTour(categoryId, note._id, subNote._id);
                                 showAlert("Deleted successfully", "success");
                             }}
                             showAlert={showAlert}

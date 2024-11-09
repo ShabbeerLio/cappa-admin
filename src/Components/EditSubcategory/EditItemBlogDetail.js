@@ -36,10 +36,10 @@ const EditItemBlogDetail = (props) => {
                                         name="etitle"
                                         onChange={props.onChange}
                                         minLength={3}
-                                        required
                                         value={props.note.etitle}
                                     />
                                 </div>
+                                
                                 <div className="mb-3">
                                     <label htmlFor="edescription" className="form-label">
                                         Description
@@ -51,6 +51,20 @@ const EditItemBlogDetail = (props) => {
                                         onChange={props.onChange}
                                         minLength={3}
                                         value={props.note.edescription}
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="eday" className="form-label">
+                                        Enter day
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="eday"
+                                        name="eday"
+                                        onChange={props.onChange}
+                                        minLength={3}
+                                        value={props.note.eday}
                                     />
                                 </div>
                                 <div className="mb-3">

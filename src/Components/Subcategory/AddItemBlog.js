@@ -1,21 +1,43 @@
 import React, { useState } from 'react';
 import { MdAdd } from "react-icons/md";
 
-const AddItemBlog = ({ addItem, showAlert, notes, refClose }) => {
-    // const { addItem, showAlert ,notes ,refClose} = props;
-    const [note, setNote] = useState({ title: "", description: "" });
+const AddItemBlog = ({ addItem, showAlert, notes, refClose, categoryId }) => {
+    const [note, setNote] = useState({
+        title: "",
+        description: "",
+        day: ""
+    });
     const [image, setImage] = useState(null);
 
     const handleImageChange = (e) => {
         e.preventDefault();
-        setImage(e.target.files[0]);
+        const file = e.target.files[0];
+
+        if (file && file.size > 5000000) {
+            showAlert("File size too large. Please upload a file less than 5MB.", "danger");
+            return;
+        }
+
+        setImage(file);
     };
 
     const handleClick = async (e) => {
         e.preventDefault();
         try {
-            await addItem(notes._id, note.title, note.description, image);
-            setNote({ title: "", description: "" });
+            if (!note.title || !note.description || !note.day || !image) {
+                showAlert("All fields are required.", "danger");
+                return;
+            }
+
+            await addItem(categoryId, notes._id, note.title, note.description, note.day, image);
+
+            setNote({
+                title: "",
+                description: "",
+                day: ""
+            });
+            setImage(null);
+
             showAlert("Added successfully", "success");
         } catch (error) {
             console.error("There was an error uploading the file!", error);
@@ -26,8 +48,6 @@ const AddItemBlog = ({ addItem, showAlert, notes, refClose }) => {
     const onChange = (e) => {
         setNote({ ...note, [e.target.name]: e.target.value });
     };
-
-
 
     return (
         <>
@@ -47,24 +67,29 @@ const AddItemBlog = ({ addItem, showAlert, notes, refClose }) => {
                                         className="form-control"
                                         id="title"
                                         name='title'
-                                        aria-describedby="titleHelp"
                                         onChange={onChange}
                                         value={note.title}
-                                        required
                                     />
                                 </div>
-                                
                                 <div className="mb-3">
                                     <label htmlFor="description" className="form-label">Description</label>
                                     <textarea
-                                        // type="text"
                                         className="form-control"
                                         id="description"
                                         name='description'
-                                        aria-describedby="descriptionHelp"
                                         onChange={onChange}
                                         value={note.description}
-                                        required
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="day" className="form-label">Day</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="day"
+                                        name='day'
+                                        onChange={onChange}
+                                        value={note.day}
                                     />
                                 </div>
                                 <div className="mb-3">
@@ -75,10 +100,17 @@ const AddItemBlog = ({ addItem, showAlert, notes, refClose }) => {
                                         id="image"
                                         name="image"
                                         onChange={handleImageChange}
-                                        required
                                     />
                                 </div>
-                                <button disabled={note.title.length < 3} type="submit" className="AddNote-button" data-bs-dismiss="modal" onClick={handleClick} aria-label="Close" ref={refClose}>
+                                <button
+                                    type="button"
+                                    className="AddNote-button"
+                                    data-bs-dismiss="modal"
+                                    onClick={handleClick}
+                                    aria-label="Close"
+                                    ref={refClose}
+                                    disabled={note.title.length < 3 || !note.description || !note.day || !image}
+                                >
                                     <MdAdd /> Add
                                 </button>
                             </form>

@@ -175,7 +175,7 @@ const NoteState = (props) => {
             formData.append('metaTag', metaTag);
             formData.append('metaTitle', metaTitle);
             formData.append('metaDesc', metaDesc);
-    
+
             // Append images if provided
             if (subCatimageUrl) {
                 console.log("Appending subCatImage:", subCatimageUrl);
@@ -189,12 +189,12 @@ const NoteState = (props) => {
                 console.log("Appending about2Image:", about2imageUrl);
                 formData.append('about2Image', about2imageUrl);
             }
-    
+
             // Log formData to ensure it's correctly structured (for debugging)
             for (let pair of formData.entries()) {
                 console.log(pair[0] + ': ' + pair[1]);
             }
-    
+
             // Send PUT request to update subcategory
             const response = await fetch(`${host}/api/category/${clientId}/subcategories/${subcategoryId}`, {
                 method: 'PUT',
@@ -203,19 +203,19 @@ const NoteState = (props) => {
                 },
                 body: formData
             });
-    
+
             if (!response.ok) {
                 const json = await response.json();
                 throw new Error(json.error || 'Failed to edit subcategory');
             }
-    
+
             const updatedClient = await response.json();
             setNotes(prevNotes =>
                 prevNotes.map(note =>
                     note._id === clientId ? updatedClient.client : note
                 )
             );
-    
+
             console.log("Blog subcategories updated successfully");
             // Optionally show a success alert
             // showAlert("Subcategory updated successfully", "success");
@@ -256,6 +256,132 @@ const NoteState = (props) => {
         }
     };
 
+    // Add Tour
+    const addTour = async (clientId, subcategoryId, name, day, description, image) => {
+        try {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('description', description);
+            formData.append('day', day);
+            formData.append('image', image);
+
+            const response = await fetch(`${host}/api/category/${clientId}/subcategories/${subcategoryId}/tour`, {
+                method: "POST",
+                headers: {
+                    "auth-token": localStorage.getItem('token')
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add Tour detail');
+            }
+
+            // Parse the response data
+            const data = await response.json();
+
+            // Update state
+            if (data.tour) {
+                // Assuming the response contains the new tour object and we want to add it to the corresponding subcategory
+                setNotes(prevNotes => prevNotes.map(note =>
+                    note._id === clientId
+                        ? {
+                            ...note, subcategories: note.subcategories.map(sub =>
+                                sub._id === subcategoryId
+                                    ? { ...sub, tour: [...sub.tour, data.tour] }
+                                    : sub
+                            )
+                        }
+                        : note
+                ));
+                console.log("Tour added successfully");
+            }
+
+        } catch (error) {
+            console.error("Error adding Tour detail:", error.message);
+            // Optionally handle error here (showAlert)
+        }
+    };
+
+
+
+    // Edit Tour detail
+    const editTour = async (clientId, subcategoryId, tourId, name, day, description, image) => {
+        try {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('day', day);
+            formData.append('description', description);
+            if (image) {
+                formData.append('image', image);
+            }
+
+            const response = await fetch(`${host}/api/category/${clientId}/subcategories/${subcategoryId}/tour/${tourId}`, {
+                method: 'PUT',
+                headers: {
+                    "auth-token": localStorage.getItem('token')
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const json = await response.json();
+                throw new Error(json.error || 'Failed to edit Tour detail');
+            }
+            const data = await response.json();
+            // Update state
+            if (data.tour) {
+                // Assuming the response contains the new tour object and we want to add it to the corresponding subcategory
+                setNotes(prevNotes => prevNotes.map(note =>
+                    note._id === clientId
+                        ? {
+                            ...note, subcategories: note.subcategories.map(sub =>
+                                sub._id === subcategoryId
+                                    ? { ...sub, tour: [...sub.tour, data.tour] }
+                                    : sub
+                            )
+                        }
+                        : note
+                ));
+                console.log("Tour added successfully");
+            }
+        } catch (error) {
+            console.error("Error editing Tour detail:", error.message);
+            // showAlert("Failed to edit subcategory", "error");
+        }
+    };
+
+
+    // Delete Tour 
+    const deleteTour = async (clientId, subcategoryId, tourId) => {
+        try {
+            const response = await fetch(`${host}/api/category/${clientId}/subcategories/${subcategoryId}/tour/${tourId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "auth-token": localStorage.getItem('token')
+                }
+            });
+
+            if (!response.ok) {
+                const json = await response.json();
+                throw new Error(json.error || 'Failed to delete Blog detail');
+            }
+
+            // Update state to remove the deleted subcategory
+            setNotes(prevNotes =>
+                prevNotes.map(note =>
+                    note._id === clientId
+                        ? { ...note, subcategories: note.subcategories.filter(sub => sub._id !== subcategoryId) }
+                        : note
+                )
+            );
+        } catch (error) {
+            console.error("Error deleting Blog detail:", error.message);
+            // showAlert("Failed to delete subcategory", "error");
+        }
+    };
+
 
     return (
         <NoteContext.Provider value={{
@@ -268,6 +394,9 @@ const NoteState = (props) => {
             addSubcategory,
             editSubcategory,
             deleteSubcategory,
+            addTour,
+            editTour,
+            deleteTour,
         }}>
             {props.children}
         </NoteContext.Provider>
