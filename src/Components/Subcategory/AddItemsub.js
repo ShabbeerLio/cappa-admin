@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MdAdd } from "react-icons/md";
 
-const AddItemBlog = ({ addItem, showAlert, notes, refClose, categoryId }) => {
+const AddItemsub = ({ addItem, showAlert, notes, refClose, categoryId }) => {
     const [note, setNote] = useState({
         title: "",
         description: "",
@@ -122,4 +122,4 @@ const AddItemBlog = ({ addItem, showAlert, notes, refClose, categoryId }) => {
     );
 };
 
-export default AddItemBlog;
+export default AddItemsub;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { MdDelete, MdEdit } from "react-icons/md";
 import "./Card.css"
-import BlogDetail from '../BlogDetail/BlogDetail';
+import SubCategoryDetail from '../SubCategoryDetail/SubCategoryDetail';
 
 const Card1 = ({ note, index, deleteItem, updateNote, showAlert, categoryId }) => {
     const [showSubcategories, setShowSubcategories] = useState(false);
@@ -55,7 +55,7 @@ const Card1 = ({ note, index, deleteItem, updateNote, showAlert, categoryId }) =
                 </div>
             </div>
             {showSubcategories && (
-                <BlogDetail categoryId={categoryId} note={note} showAlert={showAlert} />
+                <SubCategoryDetail categoryId={categoryId} note={note} showAlert={showAlert} />
             )}
         </>
     )

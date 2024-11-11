@@ -78,7 +78,7 @@
 }
 
 .table {
-  background-color: white;
+  background-color: #f1f1f1;
   border-radius: 8px;
 }
 .table tr th:last-child {
@@ -113,6 +113,84 @@
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
 }
 
-.pro-sidebar-layout{
+.pro-sidebar-layout {
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
+}
+
+.blogTimer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blogTimer-btn p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  background-color: #673de6;
+  border-radius: 8px;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.blog-heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.blog-heading .active-tab {
+  margin: 0;
+  background-color: #f1f1f1;
+  border-radius: 8px 8px 0px 0px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.blog-heading p {
+  margin: 0;
+  background-color: white;
+  border-radius: 8px 8px 0px 0px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #f1f1f1;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.card-image-blog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-image-blog img {
+  width: 35%;
+  object-fit: cover;
+}
+
+.card2-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.card2-button p {
+  margin: 0;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.card2-button p svg {
+  font-size: 20px;
+}
+
+.card2-button p:nth-child(1):hover {
+  color: red;
+}
+.card2-button p:nth-child(2):hover {
+  color: #673de6;
 }
