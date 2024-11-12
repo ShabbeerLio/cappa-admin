@@ -58,7 +58,7 @@ const SidebarNav = () => {
         const response = await axios.get(`${host}/api/category/fetchallcategory`, {
           method: "GET",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjcyYjE5NzdmNGNmNzA4MWU5ZTFiZGU1In0sImlhdCI6MTczMTQwNjE0NH0.g1STs5UkRi7t590ZSh-kuDgSlie5CWsDqD97GQEZoLc",
             "auth-token": localStorage.getItem('token')
           },
         });
