@@ -66,7 +66,7 @@ const SubCategoryDetail = ({ note, showAlert, categoryId }) => {
         <>
             <div>
                 <div className="banner-button">
-                    <h5>Blog Detail</h5>
+                    <h5>Tours</h5>
                     <button
                         type="button"
                         className="btn btn-primary d-flex align-items-center"
@@ -74,7 +74,7 @@ const SubCategoryDetail = ({ note, showAlert, categoryId }) => {
                         data-bs-target="#staticBackdrop1"
                         ref={ref}
                     >
-                        <MdAdd /> Add Blog Detail
+                        <MdAdd /> Add Tours
                     </button>
                 </div>
                 <AddItemsub categoryId={categoryId} notes={note} addItem={addTour} refClose={refClose} showAlert={showAlert} />
