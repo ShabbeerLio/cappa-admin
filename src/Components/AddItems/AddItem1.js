@@ -73,7 +73,7 @@ const AddItem1 = ({ addItem, refClose, showAlert, clientId }) => {
                     <div className="modal-body">
                         <form>
                             <div className="mb-3">
-                                <label htmlFor="subCategory" className="form-label">Subcategory</label>
+                                <label htmlFor="subCategory" className="form-label">Title</label>
                                 <input
                                     type="text"
                                     className="form-control"

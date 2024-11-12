@@ -12,11 +12,11 @@ const EditItem1 = ({ onChange, note, refClose, handleClick, onImageChange }) => 
           <div className="modal-body">
             <form>
               <div className="mb-3">
-                <label htmlFor="esubCategory" className="form-label">subCategory</label>
+                <label htmlFor="esubCategory" className="form-label">Title</label>
                 <input type="text" className="form-control" id="esubCategory" name="esubCategory" value={note.esubCategory} onChange={onChange} />
               </div>
               <div className="mb-3">
-                <label htmlFor="esubCategorydesc" className="form-label">subCategorydesc</label>
+                <label htmlFor="esubCategorydesc" className="form-label">Description</label>
                 <input type="text" className="form-control" id="esubCategorydesc" name="esubCategorydesc" value={note.esubCategorydesc} onChange={onChange} />
               </div>
               <div className="mb-3">
@@ -41,7 +41,7 @@ const EditItem1 = ({ onChange, note, refClose, handleClick, onImageChange }) => 
               </div>
               <div className="mb-1">
                 <label htmlFor="seimage" className="form-label">
-                  Upload Image
+                  Subcategory Image
                 </label>
                 <input
                   type="file"
@@ -53,7 +53,7 @@ const EditItem1 = ({ onChange, note, refClose, handleClick, onImageChange }) => 
               </div>
               <div className="mb-1">
                 <label htmlFor="seimage1" className="form-label">
-                  Upload about1 Image
+                  About 1 Image
                 </label>
                 <input
                   type="file"
@@ -65,7 +65,7 @@ const EditItem1 = ({ onChange, note, refClose, handleClick, onImageChange }) => 
               </div>
               <div className="mb-1">
                 <label htmlFor="seimage2" className="form-label">
-                  Upload about2 Image
+                  About 2 Image
                 </label>
                 <input
                   type="file"
