@@ -13,6 +13,8 @@ import { FaBoxOpen } from "react-icons/fa";
 import { MdHighlight } from "react-icons/md";
 import logo from "../../Assets/logo.png";
 import "./SidebarNav.css";
+import axios from "axios";
+import host from "../../Host/Host";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
 
@@ -40,6 +42,34 @@ const SidebarNav = () => {
     localStorage.removeItem("token");
     history("/login");
   };
+
+  const [categories, setCategories] = useState([]);
+  const formatCategoryName = (name) => {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '');
+  };
+
+  // Fetch categories from backend on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${host}/api/category/fetchallcategory`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem('token')
+          },
+        });
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
 
   return (
@@ -88,70 +118,17 @@ const SidebarNav = () => {
           </MenuItem>
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item
-              title="Indien Rundreise"
-              to="/indien-rundreise"
-              icon={<TbCategory />}
-              selected={selected}
-              setSelected={setSelected}
-              className="sidenav-icon"
-            />
-            <Item
-              title="Nepal Rundreise"
-              to="/nepal-rundreise"
-              icon={<TbCategory2 />}
-              selected={selected}
-              setSelected={setSelected}
-              className="sidenav-icon"
-            />
-            <Item
-              title="Srilanka Rundreise"
-              to="/srilanka-rundreise"
-              icon={<FaBoxOpen />}
-              selected={selected}
-              setSelected={setSelected}
-              className="sidenav-icon"
-            />
-            <Item
-              title="Bhutan Rundreise"
-              to="/bhutan-rundreise"
-              icon={<MdHighlight />}
-              selected={selected}
-              setSelected={setSelected}
-              className="sidenav-icon"
-            />
-            <Item
-              title="Malediven Badeurlaub"
-              to="/malediven-badeurlaub"
-              icon={<MdHighlight />}
-              selected={selected}
-              setSelected={setSelected}
-              className="sidenav-icon"
-            />
-            <Item
-              title="Luxus Goldenes Dreieck"
-              to="/luxus-goldenes-dreieck"
-              icon={<MdHighlight />}
-              selected={selected}
-              setSelected={setSelected}
-              className="sidenav-icon"
-            />
-            <Item
-              title="Indien Luxusreise"
-              to="/indien-luxusreise"
-              icon={<MdHighlight />}
-              selected={selected}
-              setSelected={setSelected}
-              className="sidenav-icon"
-            />
-            <Item
-              title="Safari Rundreise"
-              to="/safari-rundreise"
-              icon={<MdHighlight />}
-              selected={selected}
-              setSelected={setSelected}
-              className="sidenav-icon"
-            />
+            {categories.map((item) => (
+              <Item
+              key={item._id}
+                title={item.category}
+                to={`/${formatCategoryName(item.category)}`}
+                icon={<TbCategory />}
+                selected={selected}
+                setSelected={setSelected}
+                className="sidenav-icon"
+              />
+            ))}
             <Item
               title="Blog"
               to="/Blog"

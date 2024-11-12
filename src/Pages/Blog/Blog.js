@@ -115,10 +115,6 @@ const Blogs = (props) => {
           <div className="banner">
             <div className="banner-button">
               <h2>Blog</h2>
-              {/* <div className="blogTimer">
-                <p className="blogtimer-title">Upcoming Blog</p>
-                <BlogTimer />
-              </div> */}
               <button
                 type="button"
                 className="btn btn-primary d-flex align-items-center"

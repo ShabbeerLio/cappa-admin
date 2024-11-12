@@ -22,7 +22,7 @@ const IndienRun = (props) => {
     const navigate = useNavigate();
 
     // Example categoryId - update this dynamically if needed
-    const categoryId = "672cac573e14f1e3f07301b7";
+    const categoryId = [props.id];
 
     useEffect(() => {
         const fetchSubcategories = async () => {
@@ -118,7 +118,7 @@ const IndienRun = (props) => {
                 <>
                     <div className="banner">
                         <div className="banner-button">
-                            <h2>Indien Rundreise</h2>
+                            <h2>{props.title}</h2>
                             <button
                                 type="button"
                                 className="btn btn-primary d-flex align-items-center"

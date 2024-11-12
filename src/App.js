@@ -1,22 +1,17 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SidebarNav from "./Components/Sidebar/SidebarNav";
 import { CssBaseline } from "@mui/material";
 import Topbar from "./Components/Sidebar/Topbar";
 import Login from "./Components/LogIn/Login";
 import IndienRun from "./Pages/IndienRun";
-import NepalRun from "./Pages/NepalRun";
-import SrilankaRun from "./Pages/SrilankaRun";
-import BhutanRun from "./Pages/BhutanRun";
-import Malediven from "./Pages/Malediven";
-import LuxusGold from "./Pages/LuxusGold";
-import IndienLux from "./Pages/IndienLux";
-import SafariRun from "./Pages/SafariRun";
 import Blog from "./Pages/Blog/Blog";
 import NoteState from "./Context/Banner/NoteState";
 import Alert from "./Components/Alert/Alert";
 import Category from "./Pages/Category";
+import axios from 'axios';
+import host from "./Host/Host";
 
 function App() {
   const [isSidebar, setIsSidebar] = useState(true);
@@ -31,6 +26,35 @@ function App() {
     }, 1500);
   }
 
+  const [categories, setCategories] = useState([]);
+  const formatCategoryName = (name) => {
+    return name
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '');
+  };
+
+  // Fetch categories from backend on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${host}/api/category/fetchallcategory`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem('token')
+          },
+        });
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        showAlert("Failed to load categories", "error");
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <NoteState>
       <Router>
@@ -43,14 +67,17 @@ function App() {
             <Routes>
               <Route path="/" exact element={<Category showAlert={showAlert} />} />
               <Route path="/login" exact element={<Login showAlert={showAlert} />} />
-              <Route path="/indien-rundreise" exact element={<IndienRun showAlert={showAlert} />} />
-              <Route path="/nepal-rundreise" exact element={<NepalRun showAlert={showAlert} />} />
-              <Route path="/srilanka-rundreise" exact element={<SrilankaRun showAlert={showAlert} />} />
-              <Route path="/bhutan-rundreise" exact element={<BhutanRun showAlert={showAlert} />} />
-              <Route path="/malediven-badeurlaub" exact element={<Malediven showAlert={showAlert} />} />
-              <Route path="/luxus-goldenes-dreieck" exact element={<LuxusGold showAlert={showAlert} />} />
-              <Route path="/indien-luxusreise" exact element={<IndienLux showAlert={showAlert} />} />
-              <Route path="/safari-rundreise" exact element={<SafariRun showAlert={showAlert} />} />
+              {categories.map((item) => (
+                <Route
+                  key={item._id}
+                  path={`/${formatCategoryName(item.category)}`}
+                  exact element={
+                    <IndienRun
+                      title={item.category}
+                      showAlert={showAlert}
+                      id={item._id}
+                    />} />
+              ))}
               <Route path="/Blog" exact element={<Blog showAlert={showAlert} />} />
             </Routes>
           </div>
